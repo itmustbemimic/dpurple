@@ -5,7 +5,9 @@ const artSchema = new Schema({
     img_path: String,
     name: String,
     artist: String,
-    value: Number
+    value: Number,
+    view_count: Number,
+    like_count: Number
 });
 
 artSchema.statics.findAll = function () {
@@ -25,5 +27,16 @@ artSchema.statics.findOneByName = function (name) {
     return this.findOne({name});
 }
 
+artSchema.methods.increaseViewCount = function (art) {
+    art.view_count++;
+
+    return art.save();
+}
+
+artSchema.methods.increaseLikeCount = function (art) {
+    art.like_count++;
+
+    return art.save();
+}
 
 module.exports = mongoose.model('Art', artSchema);
