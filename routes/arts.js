@@ -49,6 +49,7 @@ router.get('/like/:id', (req, res) => {
 //작품 업로드
 router.post('/', (req, res) => {
     console.log(req.body);
+
     Art.create(req.body)
         .then(art => res.send(art))
         .catch(err => res.status(500).send(err));
