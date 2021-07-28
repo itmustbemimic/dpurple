@@ -45,7 +45,6 @@ router.get('/like/:id', (req, res) => {
 })
 
 
-
 //작품 업로드
 router.post('/', (req, res) => {
     console.log(req.body);

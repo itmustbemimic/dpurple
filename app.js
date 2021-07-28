@@ -18,6 +18,7 @@ const usersRouter = require('./routes/users');
 const artsRouter = require('./routes/arts');
 const imgRouter = require('./routes/images');
 const rankRouter = require('./routes/rank');
+const searchRouter = require('./routes/search');
 
 
 const app = express();
@@ -40,6 +41,7 @@ app.use('/users', usersRouter);
 app.use('/arts', artsRouter);
 app.use('/images', imgRouter);
 app.use('/rank', rankRouter);
+app.use('/search', searchRouter);
 
 
 // catch 404 and forward to error handler
