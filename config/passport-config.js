@@ -1,38 +1,34 @@
 const passport = require('passport');
-const LocalStrategy = require('passport').Strategy;
-const User = require('../models/art');
+const {Strategy: LocalStrategy} = require('passport-local');
+const bcrypt = require('bcrypt');
 
-passport.use('something',
-    new LocalStrategy(
-        {
-            _usernameField: 'id',
-            _passwordField: 'pw'
-        },
-        function (username, password, done) {
-            User.findOne({id: username}, (err, user) => {
-                if (user) {
-                    if (password == user.password) {
-                        return done(null, user);
-                    } else {
-                        return done(null, false, {message: 'Incorrect password'});
-                    }
-                } else {
-                    return done(null, false, {message: 'Incorrect ID'});
-                }
-            });
+require('dotenv').config();
+const {SALT_FACTOR} = process.env;
+const User = require('../models/user');
+
+
+const passportVerify = async (email, password, done) => {
+    try {
+        const user = await User.find({email: email});
+
+        if (!user) {
+            done(null, false, {reason: '누구세요ㅕ'});
+            return;
         }
-    )
-);
 
-passport.serializeUser(function (user, done) {
-    done(null, user._id);
-});
+        const compareResult = await bcrypt.compare(password, user.password);
 
-passport.deserializeUser(function (id, done) {
-    User.findOne({_id: id}, (err, user) => {
-        done(null, user);
-    });
-});
+        if (compareResult) {
+            done(null, user);
+            return;
+        }
+    } catch (error) {
+        console.error(error);
+        done(error);
 
+    }
+}
 
-module.exports = passport;
+module.exports = () => {
+    passport.use('local', new LocalStrategy(passportConfig, passportVerify));
+}

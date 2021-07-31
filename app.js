@@ -6,7 +6,8 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
-//const passport = require('./config/passport-config');
+const passport = require('passport');
+const passportConfig = require('./config/passport-config')
 
 require('dotenv').config();
 
@@ -34,6 +35,8 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static('public'));
 app.use(cookieParser(COOKIE_SEC));
+// app.use(passport.initialize);
+// app.use(passport.session);
 
 
 app.use('/', indexRouter);

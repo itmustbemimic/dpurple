@@ -30,21 +30,6 @@ router.get('/:id', (req, res) => {
 
 });
 
-
-//찜 클릭
-router.get('/like/:id', (req, res) => {
-    Art.findById(req.params.id)
-        .then((art) => {
-            art.increaseLikeCount(art);
-            res.send(art);
-            console.log(art);
-        })
-        .catch((err) => {
-            console.error(err);
-        })
-})
-
-
 //작품 업로드
 router.post('/', (req, res) => {
     console.log(req.body);
@@ -69,6 +54,20 @@ router.put('/:id', (req, res) => {
         .then(art => res.send(art))
         .catch(err => res.status(500).send(err));
 });
+
+
+//찜 클릭
+router.get('/like/:id', (req, res) => {
+    Art.findById(req.params.id)
+        .then((art) => {
+            art.increaseLikeCount(art);
+            res.send(art);
+            console.log(art);
+        })
+        .catch((err) => {
+            console.error(err);
+        })
+})
 
 
 module.exports = router;
