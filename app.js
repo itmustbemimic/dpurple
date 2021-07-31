@@ -68,16 +68,16 @@ mongoose.connect(MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
     .catch(e => console.error(e));
 
 
-app.use(
-    session({
-        secret: COOKIE_SEC,
-        resave: false,
-        saveUninitialized: false,
-        store: MongoStore.create({
-            mongoUrl: MONGO_URI
-        })
-    })
-);
+// app.use(
+//     session({
+//         secret: COOKIE_SEC,
+//         resave: false,
+//         saveUninitialized: false,
+//         store: MongoStore.create({
+//             mongoUrl: MONGO_URI
+//         })
+//     })
+// );
 
 
 
