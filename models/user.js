@@ -1,53 +1,58 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
-
-require('dotenv').config();
-const {SALT_FACTOR} = process.env;
+const jwt = require('jsonwebtoken');
 
 const userSchema = new Schema({
     user_img: {type: String, default: '디폴트는 뭐로하지'},
-    email: String,
+    email: {type: String, trim: true, unique: 1},
     username: String,
     password: String,
-    social: {
-        naver: {
-            id: String,
-            accessToken: String
-        },
-        google: {
-            id: String,
-            accessToken: String
-        }
-    },
     favorite_arts: [{type: Schema.Types.ObjectId, ref: 'Art'}],
     favorite_artists: [{type: Schema.Types.ObjectId, ref: 'User'}]
 });
 
-userSchema.pre("create", (done) => {
+userSchema.pre('save', function (next) {
     let user = this;
 
+    if(user.isModified("password")) {
+        bcrypt.genSalt(10, function (err, salt) {
+            if (err) return next(err);
 
-    if (user.isModified("password")) {
-        bcrypt.genSalt(SALT_FACTOR, (err, salt) => {
-            if (err) return done(err);
-
-            bcrypt.hash(user.password, salt, (err, hashedPassword) => {
-                if (err) return done(err);
-                user.password = hashedPassword;
-                done();
-            });
-        });
+            bcrypt.hash(user.password, salt, function (err, hash) {
+                if(err) return next(err);
+                user.password = hash;
+                next();
+            })
+        })
     } else {
-        done();
+        next();
     }
-});
+})
 
-userSchema.methods.comparePassword = function (plainPw) {
-   return bcrypt.compare(plainPw, this.password)
-       .then((isMatch) => isMatch)
-       .catch((err) => console.error(err));
+userSchema.methods.comparePassword = function (plainPassword) {
+    return bcrypt.compare(plainPassword, this.password)
+        .then((isMatch) => isMatch)
+        .catch((err) => err);
 };
 
+userSchema.methods.generateToken = function () {
+    const token = jwt.sign(this._id.toHexString(), "so!purple!");
+    this.token = token;
+
+    return this.save()
+        .then((user) => user)
+        .catch((err) => err);
+};
+
+userSchema.statics.findByToken = function (token) {
+    let user = this;
+
+    return jwt.verify(token, "so!purple!", function (err, decoded) {
+        return user.findOne({_id: decoded, token: token})
+            .then((user) => user)
+            .catch((err) => err);
+    });
+};
 
 module.exports = mongoose.model('User', userSchema);
