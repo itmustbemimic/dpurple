@@ -4,7 +4,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
-
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+const cors = require('cors');
 
 require('dotenv').config();
 
@@ -32,8 +34,26 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static('public'));
 app.use(cookieParser());
-// app.use(passport.initialize);
-// app.use(passport.session);
+app.use(
+    cors({
+        origin: true,
+        credentials: false
+    })
+)
+
+
+app.use(
+    session({
+        secret: "so!purple!",
+        resave: false,
+        saveUninitialized: false,
+        store: MongoStore.create({
+            mongoUrl: MONGO_URI,
+            collectionName: "sessions"
+        })
+    })
+);
+
 
 
 app.use('/', indexRouter);
@@ -60,21 +80,12 @@ app.use(function (err, req, res, next) {
     res.render('error');
 });
 
-mongoose.connect(MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
     .then(() => console.log('connected to db'))
     .catch(e => console.error(e));
 
 
-// app.use(
-//     session({
-//         secret: COOKIE_SEC,
-//         resave: false,
-//         saveUninitialized: false,
-//         store: MongoStore.create({
-//             mongoUrl: MONGO_URI
-//         })
-//     })
-// );
+
 
 
 

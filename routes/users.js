@@ -3,6 +3,18 @@ const router = express.Router();
 const User = require("../models/user");
 const auth = require("../middleware/auth");
 
+router.get('/test', (req, res) => {
+    if (!req.session.user_id) {
+        return res.send('로그인 안했자나요')
+    }
+    console.log(req.session.user_id);
+    console.log(req.session.logined);
+    User.findById(req.session.user_id, (err, user) => {
+        res.send(user.username);
+    })
+
+})
+
 router.get('/users', (req, res) => {
     User.find()
         .then((users) => {
@@ -27,6 +39,7 @@ router.post('/register', (req, res) => {
 
 router.post('/login', (req, res) => {
     User.findOne({email: req.body.email}, (err, user) => {
+        console.log(user);
         if (user == null) {
             return res.json({
                 success: false,
@@ -43,20 +56,45 @@ router.post('/login', (req, res) => {
                     });
                 }
 
-                user.generateToken()
-                    .then((user) => {
-                        res.cookie("x_auth", user.token)
-                            .status(200)
-                            .json({success: true, userId: user._id});
-                    })
-                    .catch((err) => {
-                        res.status(400).send(err);
-                        console.log(err);
-                    });
+                // user.generateToken()
+                //     .then((user) => {
+                //         res.cookie("x_auth", user.token)
+                //             .status(200)
+                //             .json({success: true, userId: user._id});
+                //     })
+                //     .catch((err) => {
+                //         res.status(400).send(err);
+                //         console.log(err);
+                //     });
+                console.log('sdfsdfdsf')
+                req.session.user_id = user._id;
+                req.session.logined = true;
+                res.send('hi ' + user.username);
             })
             .catch(err => res.json({success: false, err}));
     })
+
+
 })
+
+
+router.get('/logout', auth, (req, res) => {
+    // User.findByIdAndUpdate(req.user._id, {token: ""}, (err, user) => {
+    //     if (err)
+    //         return res.json({
+    //             success: false, err
+    //         });
+    //
+    //     res.clearCookie("x_auth");
+    //
+    //     return res.status(200).send({success: true});
+    // });
+
+    req.session.destroy();
+    res.send('logout!')
+
+
+});
 
 
 router.get('/auth', auth, (req, res) => {
@@ -68,8 +106,8 @@ router.get('/auth', auth, (req, res) => {
         username: req.username,
         favorite_arts: req.favorite_arts,
         favorite_artist: req.favorite_artist
-    })
+    });
 
-})
+});
 
 module.exports = router;

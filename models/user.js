@@ -9,7 +9,9 @@ const userSchema = new Schema({
     username: String,
     password: String,
     favorite_arts: [{type: Schema.Types.ObjectId, ref: 'Art'}],
-    favorite_artists: [{type: Schema.Types.ObjectId, ref: 'User'}]
+    favorite_artists: [{type: Schema.Types.ObjectId, ref: 'User'}],
+
+    token: String
 });
 
 userSchema.pre('save', function (next) {
