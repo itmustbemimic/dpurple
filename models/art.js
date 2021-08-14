@@ -23,4 +23,10 @@ artSchema.methods.increaseLikeCount = function (art) {
     return art.save();
 }
 
+artSchema.methods.decreaseLikeCount = function (art) {
+    art.like_count--;
+
+    return art.save();
+}
+
 module.exports = mongoose.model('Art', artSchema);

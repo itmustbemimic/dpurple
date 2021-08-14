@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Art = require('../models/art');
+const User = require('../models/user');
 
 //전체 작품 조회
 router.get('/', (req, res) => {
@@ -60,9 +61,25 @@ router.put('/:id', (req, res) => {
 router.get('/like/:id', (req, res) => {
     Art.findById(req.params.id)
         .then((art) => {
-            art.increaseLikeCount(art);
+
+            User.findById(req.session.user_id)
+                .then((user) => {
+
+                    console.log(user.favorite_arts.includes(req.params.id));
+                    //좋아요를 처음 눌렀을때 => 유저 스키마에 작품아이디 추가, 작품 스키마에 카운트 +1
+                     if (!user.favorite_arts.includes(req.params.id)) {
+                         user.addFavoriteArts(req.params.id);
+                         art.increaseLikeCount(art);
+                    }
+
+                    //좋아요를 두번 눌렀을때 => 유저 스키마에 작품아이디 삭제, 작품 스키마에 카운트 -1
+                    else {
+                        user.deleteFavoriteArts(req.params.id);
+                        art.decreaseLikeCount(art);
+                    }
+                });
+
             res.send(art);
-            console.log(art);
         })
         .catch((err) => {
             console.error(err);

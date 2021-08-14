@@ -57,4 +57,21 @@ userSchema.statics.findByToken = function (token) {
     });
 };
 
+userSchema.methods.addFavoriteArts = function (arts_id) {
+    this.favorite_arts.push(arts_id);
+
+    return this.save()
+        .then((user) => user)
+        .catch((err) => err);
+};
+
+userSchema.methods.deleteFavoriteArts = function (arts_id) {
+  this.favorite_arts.pull(arts_id);
+
+  return this.save()
+      .then((user) => user)
+      .catch((err) => err);
+
+};
+
 module.exports = mongoose.model('User', userSchema);
