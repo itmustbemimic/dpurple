@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const artSchema = new Schema({
     img: String,
     title: String,
-    name: [{type: Schema.Types.ObjectId, ref: 'User'}],
+    name: {type: Schema.Types.ObjectId, ref: 'User'},
     price: Number,
     views: Number,
     saves: Number
