@@ -59,6 +59,7 @@ router.put('/:id', (req, res) => {
 
 //찜 클릭
 router.get('/like/:id', (req, res) => {
+
     Art.findById(req.params.id)
         .then((art) => {
 
