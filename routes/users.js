@@ -78,7 +78,7 @@ router.post('/login', (req, res) => {
 })
 
 
-router.get('/logout', auth, (req, res) => {
+router.get('/logout', (req, res) => {
     // User.findByIdAndUpdate(req.user._id, {token: ""}, (err, user) => {
     //     if (err)
     //         return res.json({

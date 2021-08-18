@@ -10,6 +10,9 @@ const userSchema = new Schema({
     password: String,
     favorite_arts: [{type: Schema.Types.ObjectId, ref: 'Art'}],
     favorite_artists: [{type: Schema.Types.ObjectId, ref: 'User'}],
+    wallet_addr: String,
+    my_arts:[{type: Schema.Types.ObjectId, ref: 'Art'}],
+    //지갑주소, 보유중 작품,
 
     token: String
 });

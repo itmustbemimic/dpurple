@@ -7,7 +7,9 @@ const artSchema = new Schema({
     name: {type: Schema.Types.ObjectId, ref: 'User'},
     price: Number,
     views: Number,
-    saves: Number
+    saves: Number,
+    onSale: Boolean
+    //판매중 여부 boolean
 
 });
 

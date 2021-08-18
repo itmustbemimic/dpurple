@@ -5,7 +5,7 @@ const User = require('../models/user');
 
 //전체 작품 조회
 router.get('/', (req, res) => {
-    Art.find()
+    Art.find().populate('name', 'username')
         .then((arts) => {
             res.send(arts);
             console.log(arts);
@@ -33,17 +33,35 @@ router.get('/:id', (req, res) => {
 
 //작품 업로드
 router.post('/', (req, res) => {
-    console.log(req.body);
 
-    Art.create(req.body)
+    const newbie = new Art({
+        img: req.body.img,
+        title: req.body.title,
+        price: req.body.price,
+        name: req.session.user_id,
+        views: 0,
+        saves: 0
+    });
+
+    Art.create(newbie)
         .then(art => res.send(art))
         .catch(err => res.status(500).send(err));
 })
 
 //작품 삭제
 router.delete('/:id', (req, res) => {
-    Art.findByIdAndDelete(req.params.id)
-        .then(() => res.sendStatus(200))
+    Art.findById(req.params.id)
+        .then((art) => {
+            //로그인아이디와 작품의 name이 일치할때 => 삭제
+            if (art.name == req.session.user_id) {
+                art.delete();
+                res.sendStatus(200);
+            } else {
+                res.send('소유주만 삭제가 가능합니다.');
+            }
+
+
+        })
         .catch(err => res.status(500).send(err));
 
 });
@@ -54,6 +72,7 @@ router.put('/:id', (req, res) => {
     Art.findByIdAndUpdate(req.params.id, req.body)
         .then(art => res.send(art))
         .catch(err => res.status(500).send(err));
+
 });
 
 
