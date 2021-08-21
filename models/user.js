@@ -11,8 +11,9 @@ const userSchema = new Schema({
     favorite_arts: [{type: Schema.Types.ObjectId, ref: 'Art'}],
     favorite_artists: [{type: Schema.Types.ObjectId, ref: 'User'}],
     wallet_addr: String,
-    my_arts:[{type: Schema.Types.ObjectId, ref: 'Art'}],
-    onSale:[{type: Schema.Types.ObjectId, ref: 'Art'}],
+    //my_arts:[{type: Schema.Types.ObjectId, ref: 'Art'}],
+    onSale: [{type: Schema.Types.ObjectId, ref: 'Art'}],
+    notOnSale: [{type: Schema.Types.ObjectId, ref: 'Art'}]
 });
 
 userSchema.pre('save', function (next) {

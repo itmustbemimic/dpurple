@@ -25,6 +25,16 @@ router.get('/users', (req, res) => {
         })
 });
 
+router.get('/:id', (req, res) => {
+    User.findById(req.params.id)
+        .then((user) => {
+            res.send(user);
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+});
+
 router.post('/register', (req, res) => {
     const user = new User(req.body);
 
