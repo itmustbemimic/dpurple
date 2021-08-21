@@ -12,9 +12,7 @@ const userSchema = new Schema({
     favorite_artists: [{type: Schema.Types.ObjectId, ref: 'User'}],
     wallet_addr: String,
     my_arts:[{type: Schema.Types.ObjectId, ref: 'Art'}],
-    //지갑주소, 보유중 작품,
-
-    token: String
+    onSale:[{type: Schema.Types.ObjectId, ref: 'Art'}],
 });
 
 userSchema.pre('save', function (next) {
