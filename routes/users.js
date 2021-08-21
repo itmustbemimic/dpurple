@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require("../models/user");
+const Art = require('../models/art');
 const auth = require("../middleware/auth");
 
 router.get('/test', (req, res) => {
@@ -140,23 +141,37 @@ router.get('/auth', auth, (req, res) => {
 
 });
 
-router.get('/sell/:user_id/:arts_id', (req, res) => {
+router.post('/sell/:user_id/:arts_id', (req, res) => {
     //user_id 나중에 req.session.user_id로 바꾸기
-    console.log("hi");
     User.findById(req.params.user_id)
         .then((user) => {
             user.switchToSale(req.params.arts_id);
             res.send(user.onSale);
         })
+
+    Art.findById(req.params.arts_id)
+        .then((art) => {
+            art.price = req.body.price;
+            art.save();
+        }
+    )
 })
 
-router.get('/notsell/:user_id/:arts_id', (req, res) => {
+router.post('/notsell/:user_id/:arts_id', (req, res) => {
     //user_id 나중에 req.session.user_id로 바꾸기
     User.findById(req.params.user_id)
         .then((user) => {
             user.switchToNotSale(req.params.arts_id);
             res.send(user.notOnSale);
         })
+
+    Art.findById(req.params.arts_id)
+        .then((art) => {
+                art.price = 0;
+                art.save();
+            }
+
+        )
 })
 
 module.exports = router;
