@@ -146,6 +146,7 @@ router.get('/sell/:user_id/:arts_id', (req, res) => {
     User.findById(req.params.user_id)
         .then((user) => {
             user.switchToSale(req.params.arts_id);
+            res.send(user.onSale);
         })
 })
 
@@ -154,6 +155,7 @@ router.get('/notsell/:user_id/:arts_id', (req, res) => {
     User.findById(req.params.user_id)
         .then((user) => {
             user.switchToNotSale(req.params.arts_id);
+            res.send(user.notOnSale);
         })
 })
 

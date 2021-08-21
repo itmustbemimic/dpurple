@@ -77,7 +77,7 @@ userSchema.methods.deleteFavoriteArts = function (arts_id) {
 };
 
 userSchema.methods.switchToSale = function (arts_id) {
-    this.onSale.push(arts_id);
+    this.onSale.addToSet(arts_id);
     this.notOnSale.pull(arts_id);
 
     return this.save()
@@ -87,7 +87,7 @@ userSchema.methods.switchToSale = function (arts_id) {
 };
 
 userSchema.methods.switchToNotSale = function (arts_id) {
-    this.notOnSale.push(arts_id);
+    this.notOnSale.addToSet(arts_id);
     this.onSale.pull(arts_id);
 
     return this.save()
