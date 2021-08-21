@@ -76,4 +76,24 @@ userSchema.methods.deleteFavoriteArts = function (arts_id) {
 
 };
 
+userSchema.methods.switchToSale = function (arts_id) {
+    this.onSale.push(arts_id);
+    this.notOnSale.pull(arts_id);
+
+    return this.save()
+        .then((user) => user)
+        .catch((err) => err);
+
+};
+
+userSchema.methods.switchToNotSale = function (arts_id) {
+    this.notOnSale.push(arts_id);
+    this.onSale.pull(arts_id);
+
+    return this.save()
+        .then((user) => user)
+        .catch((err) => err);
+
+};
+
 module.exports = mongoose.model('User', userSchema);

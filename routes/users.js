@@ -140,4 +140,21 @@ router.get('/auth', auth, (req, res) => {
 
 });
 
+router.get('/sell/:user_id/:arts_id', (req, res) => {
+    //user_id 나중에 req.session.user_id로 바꾸기
+    console.log("hi");
+    User.findById(req.params.user_id)
+        .then((user) => {
+            user.switchToSale(req.params.arts_id);
+        })
+})
+
+router.get('/notsell/:user_id/:arts_id', (req, res) => {
+    //user_id 나중에 req.session.user_id로 바꾸기
+    User.findById(req.params.user_id)
+        .then((user) => {
+            user.switchToNotSale(req.params.arts_id);
+        })
+})
+
 module.exports = router;
