@@ -37,10 +37,16 @@ router.post('/', (req, res) => {
     const newbie = new Art({
         img: req.body.img,
         title: req.body.title,
-        price: req.body.price,
         name: req.session.user_id,
+        price: req.body.price,
         views: 0,
-        saves: 0
+        saves: 0,
+
+        price_klay: req.body.price_klay,
+        price_krw: req.body.price_krw,
+        ratio: req.body.ratio,
+        nonce: req.body.nonce,
+        time: req.body.time
     });
 
     Art.create(newbie)
