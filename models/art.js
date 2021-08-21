@@ -5,11 +5,17 @@ const artSchema = new Schema({
     img: String,
     title: String,
     name: {type: Schema.Types.ObjectId, ref: 'User'},
-    price: Number,
+    price: Number, //현재 판매중인 가격, 0이면 판매중이 아님
     views: Number,
     saves: Number,
-    onSale: Boolean
-    //판매중 여부 boolean
+
+
+    //최근 거래 정보
+    price_klay: String,
+    price_krw: String,
+    ratio: String,
+    nonce: String,
+    time: String
 
 });
 
