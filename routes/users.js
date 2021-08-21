@@ -36,7 +36,7 @@ router.get('/:id', (req, res) => {
 });
 
 router.get('/:id/onsale', (req, res) => {
-    User.findById(req.params.id)
+    User.findById(req.params.id).populate('onSale')
         .then((user) => {
             res.send(user.onSale);
         })
@@ -46,7 +46,7 @@ router.get('/:id/onsale', (req, res) => {
 });
 
 router.get('/:id/notonsale', (req, res) => {
-    User.findById(req.params.id)
+    User.findById(req.params.id).populate('notOnSale')
         .then((user) => {
             res.send(user.notOnSale);
         })

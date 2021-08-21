@@ -59,12 +59,12 @@ router.delete('/:id', (req, res) => {
     Art.findById(req.params.id)
         .then((art) => {
             //로그인아이디와 작품의 name이 일치할때 => 삭제
-            if (art.name == req.session.user_id) {
+            //if (art.name == req.session.user_id) {
                 art.delete();
                 res.sendStatus(200);
-            } else {
-                res.send('소유주만 삭제가 가능합니다.');
-            }
+            //} else {
+            //     res.send('소유주만 삭제가 가능합니다.');
+            // }
 
 
         })
