@@ -35,6 +35,26 @@ router.get('/:id', (req, res) => {
         });
 });
 
+router.get('/:id/onsale', (req, res) => {
+    User.findById(req.params.id)
+        .then((user) => {
+            res.send(user.onSale);
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+});
+
+router.get('/:id/notonsale', (req, res) => {
+    User.findById(req.params.id)
+        .then((user) => {
+            res.send(user.notOnSale);
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+});
+
 router.post('/register', (req, res) => {
     const user = new User(req.body);
 
