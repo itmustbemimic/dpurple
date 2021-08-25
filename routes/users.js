@@ -167,7 +167,7 @@ router.post('/notsell/:user_id/:arts_id', (req, res) => {
 
     Art.findById(req.params.arts_id)
         .then((art) => {
-                art.price = 0;
+                art.price = "0";
                 art.save();
             }
 
