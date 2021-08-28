@@ -8,7 +8,6 @@ router.get('/', (req, res) => {
     Art.find().populate('name', 'username')
         .then((arts) => {
             res.send(arts);
-            console.log(arts);
         })
         .catch((err) => {
             console.error(err);
@@ -22,7 +21,6 @@ router.get('/:id', (req, res) => {
         .then((art) => {
             art.increaseViewCount(art);
             res.send(art);
-            console.log(art);
         })
         .catch((err) => {
             console.error(err);
@@ -75,9 +73,10 @@ router.delete('/:id', (req, res) => {
 
 //작품 수정
 router.put('/:id', (req, res) => {
-    Art.findByIdAndUpdate(req.params.id, req.body)
+    Art.findByIdAndUpdate(req.params.id, req.body, {new: true})
         .then(art => res.send(art))
         .catch(err => res.status(500).send(err));
+
 
 });
 
