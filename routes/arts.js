@@ -32,6 +32,11 @@ router.get('/:id', (req, res) => {
 //작품 업로드
 router.post('/', (req, res) => {
 
+    let date = new Date();
+
+    let time = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + ' '
+        + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+
     const newbie = new Art({
         img: req.body.img,
         title: req.body.title,
@@ -44,8 +49,10 @@ router.post('/', (req, res) => {
         price_krw: req.body.price_krw,
         ratio: req.body.ratio,
         nonce: req.body.nonce,
-        time: req.body.time
+        time: time
     });
+
+    console.log(newbie);
 
     Art.create(newbie)
         .then(art => res.send(art))
@@ -90,7 +97,6 @@ router.get('/like/:id', (req, res) => {
             User.findById(req.session.user_id)
                 .then((user) => {
 
-                    console.log(user.favorite_arts.includes(req.params.id));
                     //좋아요를 처음 눌렀을때 => 유저 스키마에 작품아이디 추가, 작품 스키마에 카운트 +1
                      if (!user.favorite_arts.includes(req.params.id)) {
                          user.addFavoriteArts(req.params.id);
