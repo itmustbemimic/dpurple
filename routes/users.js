@@ -4,6 +4,24 @@ const User = require("../models/user");
 const Art = require('../models/art');
 const auth = require("../middleware/auth");
 
+router.get('/logout', (req, res) => {
+    // User.findByIdAndUpdate(req.user._id, {token: ""}, (err, user) => {
+    //     if (err)
+    //         return res.json({
+    //             success: false, err
+    //         });
+    //
+    //     res.clearCookie("x_auth");
+    //
+    //     return res.status(200).send({success: true});
+    // });
+
+    req.session.destroy();
+    res.send('logout!')
+
+
+});
+
 router.get('/test', (req, res) => {
     if (!req.session.user_id) {
         return res.send('로그인 안했자나요')
@@ -109,23 +127,7 @@ router.post('/login', (req, res) => {
 })
 
 
-router.get('/logout', (req, res) => {
-    // User.findByIdAndUpdate(req.user._id, {token: ""}, (err, user) => {
-    //     if (err)
-    //         return res.json({
-    //             success: false, err
-    //         });
-    //
-    //     res.clearCookie("x_auth");
-    //
-    //     return res.status(200).send({success: true});
-    // });
 
-    req.session.destroy();
-    res.send('logout!')
-
-
-});
 
 
 router.get('/auth', auth, (req, res) => {

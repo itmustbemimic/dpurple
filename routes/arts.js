@@ -34,7 +34,7 @@ router.post('/', (req, res) => {
 
     let date = new Date();
 
-    let time = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + ' '
+    let time = date.getFullYear() + '-' + (date.getMonth() +1) + '-' + date.getDate() + ' '
         + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
 
     const newbie = new Art({
@@ -64,12 +64,12 @@ router.delete('/:id', (req, res) => {
     Art.findById(req.params.id)
         .then((art) => {
             //로그인아이디와 작품의 name이 일치할때 => 삭제
-            //if (art.name == req.session.user_id) {
+            if (art.name == req.session.user_id) {
                 art.delete();
                 res.sendStatus(200);
-            //} else {
-            //     res.send('소유주만 삭제가 가능합니다.');
-            // }
+            } else {
+                 res.send('소유주만 삭제가 가능합니다.');
+            }
 
 
         })
@@ -80,8 +80,13 @@ router.delete('/:id', (req, res) => {
 
 //작품 수정
 router.put('/:id', (req, res) => {
-    Art.findByIdAndUpdate(req.params.id, req.body, {new: true})
-        .then(art => res.send(art))
+    Art.findOneAndUpdate(
+        {_id: req.params.id, name: req.session.user_id},
+        {$set: req.body},
+        {new: true})
+        .then((art) => {
+            res.send(art)
+        })
         .catch(err => res.status(500).send(err));
 
 
