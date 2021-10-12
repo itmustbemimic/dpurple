@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const artSchema = new Schema({
     img: String,
     title: String,
-    name: {type: Schema.Types.ObjectId, ref: 'User'},
+    owner: {type: Schema.Types.ObjectId, ref: 'User'}, //소유주
+    name: {type: Schema.Types.ObjectId, ref: 'User'}, //작가
     price: String, //현재 판매중인 가격, 0이면 판매중이 아님
     views: Number,
     saves: Number,

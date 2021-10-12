@@ -5,7 +5,7 @@ const Art = require('../models/art');
 
 //조회수
 router.get('/view', (req, res) => {
-    Art.find().sort({view_count: -1}).limit(5)
+    Art.find().sort({views: -1}).limit(5)
         .then((arts) => {
             res.send(arts);
             console.log(arts);
@@ -18,7 +18,7 @@ router.get('/view', (req, res) => {
 
 //찜수
 router.get('/like', (req, res) => {
-    Art.find().sort({like_count: -1}).limit(5)
+    Art.find().sort({saves: -1}).limit(5)
         .then((arts) => {
             res.send(arts);
             console.log(arts);

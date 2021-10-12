@@ -32,8 +32,8 @@ router.get('/:id', (req, res) => {
 //작품 업로드
 router.post('/', (req, res) => {
 
+    //타임스탬프
     let date = new Date();
-
     let time = date.getFullYear() + '-' + (date.getMonth() +1) + '-' + date.getDate() + ' '
         + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
 

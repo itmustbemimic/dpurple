@@ -5,16 +5,6 @@ const Art = require('../models/art');
 const auth = require("../middleware/auth");
 
 router.get('/logout', (req, res) => {
-    // User.findByIdAndUpdate(req.user._id, {token: ""}, (err, user) => {
-    //     if (err)
-    //         return res.json({
-    //             success: false, err
-    //         });
-    //
-    //     res.clearCookie("x_auth");
-    //
-    //     return res.status(200).send({success: true});
-    // });
 
     req.session.destroy();
     res.send('logout!')
@@ -54,6 +44,7 @@ router.get('/:id', (req, res) => {
         });
 });
 
+//해당유저의 판매중 작품
 router.get('/:id/onsale', (req, res) => {
     User.findById(req.params.id).populate('onSale')
         .then((user) => {
@@ -64,6 +55,7 @@ router.get('/:id/onsale', (req, res) => {
         });
 });
 
+//해당유저의 판매중이 아닌 작품
 router.get('/:id/notonsale', (req, res) => {
     User.findById(req.params.id).populate('notOnSale')
         .then((user) => {
@@ -74,6 +66,8 @@ router.get('/:id/notonsale', (req, res) => {
         });
 });
 
+
+//회원가입
 router.post('/register', (req, res) => {
     const user = new User(req.body);
 
@@ -86,6 +80,8 @@ router.post('/register', (req, res) => {
     });
 })
 
+
+//로그인
 router.post('/login', (req, res) => {
     User.findOne({email: req.body.email}, (err, user) => {
         console.log(user);
@@ -105,17 +101,7 @@ router.post('/login', (req, res) => {
                     });
                 }
 
-                // user.generateToken()
-                //     .then((user) => {
-                //         res.cookie("x_auth", user.token)
-                //             .status(200)
-                //             .json({success: true, userId: user._id});
-                //     })
-                //     .catch((err) => {
-                //         res.status(400).send(err);
-                //         console.log(err);
-                //     });
-                console.log('sdfsdfdsf')
+
                 req.session.user_id = user._id;
                 req.session.logined = true;
                 res.send('hi ' + user.username);

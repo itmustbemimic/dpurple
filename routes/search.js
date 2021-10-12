@@ -11,7 +11,7 @@ router.get('/:keyword', (req, res) => {
     //작품명으로 검색
     if (req.query.option == 'name') {
         console.log('name!!');
-        Art.find({name: keyword})
+        Art.find({title: keyword})
             .then((arts) => {
                 res.send(arts);
 
@@ -23,7 +23,7 @@ router.get('/:keyword', (req, res) => {
         //작가명으로 검색
     } else if (req.query.option == 'artist') {
         console.log('artist!!');
-        Art.find({artist: keyword})
+        Art.find({name: keyword})
             .then((arts) => {
                 res.send(arts);
 
@@ -34,7 +34,7 @@ router.get('/:keyword', (req, res) => {
 
         //같이 검색
     } else if (req.query.option == null ){
-        Art.find({$or: [{name: keyword}, {artist: keyword}]})
+        Art.find({$or: [{title: keyword}, {name: keyword}]})
             .then((arts) => {
                 res.send(arts);
 

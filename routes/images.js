@@ -11,11 +11,13 @@ const upload = multer({
     limits: limits
 });
 
+
+//이미지 업로드
 router.post('/', upload.single('aaa'), (req, res) => {
     console.log('몬가... 몬가 일어나고 잇슴...');
 
     sharp(req.file.path)
-        .resize({width:400})
+        .resize({width:400}) //썸네일용 이미지 리사이즈
         .toFile('public/images/thumbnail/' + req.file.filename, function (err) {
             if (err) console.error(err);
             else console.log(req.file.filename + 'thumbnail generated!');
