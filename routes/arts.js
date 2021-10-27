@@ -41,6 +41,7 @@ router.post('/', (req, res) => {
         img: req.body.img,
         title: req.body.title,
         name: req.session.user_id,
+        owner: req.session.user_id,
         price: req.body.price,
         views: 0,
         saves: 0,

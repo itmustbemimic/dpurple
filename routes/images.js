@@ -24,7 +24,7 @@ router.post('/', upload.single('aaa'), (req, res) => {
         });
 
 
-    res.sendStatus(200);
+    res.send(req.file.filename);
 });
 
 

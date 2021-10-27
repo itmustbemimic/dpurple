@@ -9,8 +9,7 @@ const MongoStore = require('connect-mongo');
 const cors = require('cors');
 
 require('dotenv').config();
-
-const {MONGO_URI, COOKIE_SEC} = process.env;
+const {MONGO_URI, SEC} = process.env;
 
 
 const indexRouter = require('./routes/index');
@@ -45,7 +44,7 @@ app.use(
 
 app.use(
     session({
-        secret: "so!purple!",
+        secret: SEC,
         resave: false,
         saveUninitialized: false,
         store: MongoStore.create({
@@ -54,8 +53,6 @@ app.use(
         })
     })
 );
-
-
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -83,7 +80,7 @@ app.use(function (err, req, res, next) {
 });
 
 mongoose.connect(MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
-    .then(() => console.log('connected to db'))
+    .then(() => {console.log('connected to db');})
     .catch(e => console.error(e));
 
 
