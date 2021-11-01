@@ -11,7 +11,6 @@ const userSchema = new Schema({
     favorite_arts: [{type: Schema.Types.ObjectId, ref: 'Art'}],
     favorite_artists: [{type: Schema.Types.ObjectId, ref: 'User'}],
     wallet_addr: String,
-    //my_arts:[{type: Schema.Types.ObjectId, ref: 'Art'}],
     onSale: [{type: Schema.Types.ObjectId, ref: 'Art'}],
     notOnSale: [{type: Schema.Types.ObjectId, ref: 'Art'}]
 });
@@ -75,6 +74,22 @@ userSchema.methods.deleteFavoriteArts = function (arts_id) {
       .catch((err) => err);
 
 };
+
+userSchema.methods.addFavoriteUsers = function (user_id) {
+    this.favorite_artists.push(user_id);
+
+    return this.save()
+        .then()
+        .catch(err => console.log(err))
+}
+
+userSchema.methods.deleteFavoriteUsers = function (user_id) {
+    this.favorite_artists.pull(user_id);
+
+    return this.save()
+        .then()
+        .catch(err => console.log(err))
+}
 
 userSchema.methods.switchToSale = function (arts_id) {
     this.onSale.addToSet(arts_id);

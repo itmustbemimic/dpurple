@@ -4,7 +4,10 @@ const Recommend = require('../models/recommend');
 const Art = require('../models/art')
 
 router.get('/', (req, res) => {
-    Recommend.find().populate('art_id')
+    Recommend.find().populate({
+        path: 'art_id',
+        populate: { path: 'name', select: 'username'}
+    })
         .then((recommends) => {
             res.send(recommends);
         })

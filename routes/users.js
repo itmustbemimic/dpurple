@@ -4,6 +4,8 @@ const User = require("../models/user");
 const Art = require('../models/art');
 const auth = require("../middleware/auth");
 
+
+//로그아웃
 router.get('/logout', (req, res) => {
 
     req.session.destroy();
@@ -12,6 +14,7 @@ router.get('/logout', (req, res) => {
 
 });
 
+//로그인 여부 테스트
 router.get('/test', (req, res) => {
     if (!req.session.user_id) {
         return res.send('로그인 안했자나요')
@@ -24,6 +27,8 @@ router.get('/test', (req, res) => {
 
 })
 
+
+//전체 유저목록 출력 (테스트용)
 router.get('/users', (req, res) => {
     User.find()
         .then((users) => {
@@ -34,6 +39,9 @@ router.get('/users', (req, res) => {
         })
 });
 
+
+
+//개별 유저 프로필
 router.get('/:id', (req, res) => {
     User.findById(req.params.id)
         .then((user) => {
@@ -129,6 +137,8 @@ router.get('/auth', auth, (req, res) => {
 
 });
 
+
+//판매중이 아닌 작품을 판매중으로 변경
 router.post('/sell/:user_id/:arts_id', (req, res) => {
     //user_id 나중에 req.session.user_id로 바꾸기
     User.findById(req.params.user_id)
@@ -145,6 +155,7 @@ router.post('/sell/:user_id/:arts_id', (req, res) => {
     )
 })
 
+//판매중 작품을 판매중이 아님으로 변경
 router.post('/notsell/:user_id/:arts_id', (req, res) => {
     //user_id 나중에 req.session.user_id로 바꾸기
     User.findById(req.params.user_id)
@@ -160,6 +171,25 @@ router.post('/notsell/:user_id/:arts_id', (req, res) => {
             }
 
         )
+})
+
+
+
+router.get('/like/:artist_id', (req, res) => {
+    User.findById(req.session.user_id)
+        .then((user) => {
+
+            //좋아요를 처음 눌렀을때 => favorite_artists에 유저아이디 추가
+            if (!user.favorite_artists.includes(req.params.artist_id))
+                user.addFavoriteUsers(req.params.artist_id);
+
+            //같은유저를 두번 눌렀을때 => favorite_artists에서 해당 유저아이디 삭제
+            else
+                user.deleteFavoriteUsers(req.params.artist_id);
+
+            res.send(user);
+        })
+        .catch(err => console.log(err))
 })
 
 module.exports = router;

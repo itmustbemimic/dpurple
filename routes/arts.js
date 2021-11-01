@@ -86,11 +86,12 @@ router.put('/:id', (req, res) => {
         {$set: req.body},
         {new: true})
         .then((art) => {
-            res.send(art)
+            if (art)
+                res.send(art)
+            else
+                res.send("소유주만 수정이 가능합니다")
         })
         .catch(err => res.status(500).send(err));
-
-
 });
 
 
