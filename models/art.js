@@ -16,7 +16,17 @@ const artSchema = new Schema({
     price_krw: String,
     ratio: String,
     nonce: String,
-    time: String
+    time: String,
+
+    //최근 가격 변동 정보
+    recent_price: {
+        first: Number,
+        second: Number,
+        third: Number,
+        fourth: Number,
+        fifth: Number,
+        flag: Number //여기에 적혀있는 값이 마지막 거래 가격
+    }
 
 });
 
@@ -34,6 +44,40 @@ artSchema.methods.increaseLikeCount = function (art) {
 
 artSchema.methods.decreaseLikeCount = function (art) {
     art.saves--;
+
+    return art.save();
+}
+
+artSchema.methods.recordPrice = function (art, price) {
+    console.log('hi', art, price);
+    switch (art.recent_price.flag) {
+        case 1:
+            art.recent_price.second = price;
+            art.recent_price.flag++
+            break;
+        case 2:
+            art.recent_price.third = price;
+            art.recent_price.flag++
+            break;
+        case 3:
+            art.recent_price.fourth = price;
+            art.recent_price.flag++
+            break;
+        case 4:
+            art.recent_price.fifth = price;
+            art.recent_price.flag++
+            break;
+        case 5:
+            art.recent_price.first = price;
+            art.recent_price.flag = 1
+            break;
+
+        //flag == null => 거래기록이 없다.
+        default:
+            art.recent_price.first = price;
+            art.recent_price.flag = 1
+            break;
+    }
 
     return art.save();
 }

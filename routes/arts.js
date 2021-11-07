@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Art = require('../models/art');
 const User = require('../models/user');
+const {route} = require("express/lib/router");
 
 //전체 작품 조회
 router.get('/', (req, res) => {
@@ -50,7 +51,16 @@ router.post('/', (req, res) => {
         price_krw: req.body.price_krw,
         ratio: req.body.ratio,
         nonce: req.body.nonce,
-        time: time
+        time: time,
+
+        recent_price: {
+            first: null,
+            second: null,
+            third: null,
+            fourth: null,
+            fifth: null,
+            flag: null
+        }
     });
 
     console.log(newbie);
@@ -122,6 +132,18 @@ router.get('/like/:id', (req, res) => {
         .catch((err) => {
             console.error(err);
         })
+})
+
+
+
+router.get('/recentqueuetest/:id/:price', (req, res) => {
+    Art.findById(req.params.id)
+        .then((art) => {
+            art.recordPrice(art, req.params.price);
+            res.send(art);
+        })
+        .catch((err) => console.log(err));
+
 })
 
 
