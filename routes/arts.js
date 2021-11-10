@@ -91,17 +91,29 @@ router.delete('/:id', (req, res) => {
 
 //작품 수정
 router.put('/:id', (req, res) => {
-    Art.findOneAndUpdate(
-        {_id: req.params.id, name: req.session.user_id},
-        {$set: req.body},
-        {new: true})
-        .then((art) => {
-            if (art)
-                res.send(art)
-            else
-                res.send("소유주만 수정이 가능합니다")
-        })
-        .catch(err => res.status(500).send(err));
+
+    //수정 불가 항목 수정 시도 시 에러
+    if (req.body._id || req.body.img || req.body.name || req.body.owner || req.body.views || req.body.saves || req.body.time) {
+        res.send("수정 불가 항목")
+        console.log("무단 수정 시도: ", req.session.user_id)
+    }
+
+
+    else {
+        Art.findOneAndUpdate(
+            {_id: req.params.id, name: req.session.user_id},
+            {$set: req.body},
+            {new: true})
+            .then((art) => {
+                if (art)
+                    res.send(art)
+                else
+                    res.send("소유주만 수정이 가능합니다")
+            })
+            .catch(err => res.status(500).send(err));
+
+    }
+
 });
 
 
