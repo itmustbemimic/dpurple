@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Art = require('../models/art');
 const User = require('../models/user');
-const {route} = require("express/lib/router");
+
 
 //전체 작품 조회
 router.get('/', (req, res) => {
@@ -13,6 +13,7 @@ router.get('/', (req, res) => {
         .catch((err) => {
             console.error(err);
         })
+
 
 });
 
@@ -35,7 +36,7 @@ router.post('/', (req, res) => {
 
     //타임스탬프
     let date = new Date();
-    let time = date.getFullYear() + '-' + (date.getMonth() +1) + '-' + date.getDate() + ' '
+    let time = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' '
         + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
 
     const newbie = new Art({
@@ -79,7 +80,7 @@ router.delete('/:id', (req, res) => {
                 art.delete();
                 res.sendStatus(200);
             } else {
-                 res.send('소유주만 삭제가 가능합니다.');
+                res.send('소유주만 삭제가 가능합니다.');
             }
 
 
@@ -96,11 +97,8 @@ router.put('/:id', (req, res) => {
     if (req.body._id || req.body.img || req.body.name || req.body.owner || req.body.views || req.body.saves || req.body.time) {
         res.send("수정 불가 항목")
         console.log("무단 수정 시도: ", req.session.user_id)
-    }
-
-
-    else {
-        Art.findOneAndUpdate(            {_id: req.params.id, name: req.session.user_id},
+    } else {
+        Art.findOneAndUpdate({_id: req.params.id, name: req.session.user_id},
             {$set: req.body},
             {new: true})
             .then((art) => {
@@ -126,9 +124,9 @@ router.get('/like/:id', (req, res) => {
                 .then((user) => {
 
                     //좋아요를 처음 눌렀을때 => 유저 스키마에 작품아이디 추가, 작품 스키마에 카운트 +1
-                     if (!user.favorite_arts.includes(req.params.id)) {
-                         user.addFavoriteArts(req.params.id);
-                         art.increaseLikeCount(art);
+                    if (!user.favorite_arts.includes(req.params.id)) {
+                        user.addFavoriteArts(req.params.id);
+                        art.increaseLikeCount(art);
                     }
 
                     //좋아요를 두번 눌렀을때 => 유저 스키마에 작품아이디 삭제, 작품 스키마에 카운트 -1
@@ -146,14 +144,23 @@ router.get('/like/:id', (req, res) => {
 })
 
 
+//거래시 액션 (테스트)
+router.get('/recentqueuetest/:art_id/:price/:buyer_id/:seller_id', (req, res) => {
 
-router.get('/recentqueuetest/:id/:price', (req, res) => {
-    Art.findById(req.params.id)
+    //작품에 거래기록 추가
+    Art.findById(req.params.art_id)
         .then((art) => {
             art.recordPrice(art, req.params.price);
             res.send(art);
         })
         .catch((err) => console.log(err));
+
+    //유저별 누적 판매액수 더하기
+    User.findById(req.params.seller_id)
+        .then((user) => {
+            user.addAcc(req.params.params);
+        })
+        .catch(err => console.log(err));
 
 })
 

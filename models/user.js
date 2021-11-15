@@ -12,7 +12,9 @@ const userSchema = new Schema({
     favorite_artists: [{type: Schema.Types.ObjectId, ref: 'User'}],
     wallet_addr: String,
     onSale: [{type: Schema.Types.ObjectId, ref: 'Art'}],
-    notOnSale: [{type: Schema.Types.ObjectId, ref: 'Art'}]
+    notOnSale: [{type: Schema.Types.ObjectId, ref: 'Art'}],
+    acc: Number, //누적 거래액
+    birth: Date
 });
 
 userSchema.pre('save', function (next) {
@@ -110,5 +112,13 @@ userSchema.methods.switchToNotSale = function (arts_id) {
         .catch((err) => err);
 
 };
+
+userSchema.methods.addAcc = function (price) {
+    this.acc += price;
+
+    return this.save
+        .then((user) => user)
+        .catch((err) => err);
+}
 
 module.exports = mongoose.model('User', userSchema);

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Recommend = require('../models/recommend');
 const Art = require('../models/art')
+const User = require('../models/user')
 
 router.get('/', (req, res) => {
     Recommend.find().populate({
@@ -43,6 +44,11 @@ router.get('/:name', (req, res) => {
         })
         .catch(err => console.error(err));
 })
+
+
+
+
+
 
 
 
