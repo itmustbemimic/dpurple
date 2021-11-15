@@ -20,7 +20,7 @@ router.get('/:keyword', (req, res) => {
 
         //작가명으로 검색
     } else if (req.query.option == 'artist') {
-        User.findOne({username: keyword})
+        User.find({username: keyword})
             .then((user) => {
                 res.send(user);
             })

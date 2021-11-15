@@ -100,8 +100,7 @@ router.put('/:id', (req, res) => {
 
 
     else {
-        Art.findOneAndUpdate(
-            {_id: req.params.id, name: req.session.user_id},
+        Art.findOneAndUpdate(            {_id: req.params.id, name: req.session.user_id},
             {$set: req.body},
             {new: true})
             .then((art) => {

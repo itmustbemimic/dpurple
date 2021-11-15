@@ -40,7 +40,6 @@ router.get('/users', (req, res) => {
 });
 
 
-
 //개별 유저 프로필
 router.get('/:id', (req, res) => {
     User.findById(req.params.id)
@@ -121,9 +120,6 @@ router.post('/login', (req, res) => {
 })
 
 
-
-
-
 router.get('/auth', auth, (req, res) => {
     res.status(200).json({
         _id: req._id,
@@ -149,10 +145,10 @@ router.post('/sell/:user_id/:arts_id', (req, res) => {
 
     Art.findById(req.params.arts_id)
         .then((art) => {
-            art.price = req.body.price;
-            art.save();
-        }
-    )
+                art.price = req.body.price;
+                art.save();
+            }
+        )
 })
 
 //판매중 작품을 판매중이 아님으로 변경
@@ -169,10 +165,8 @@ router.post('/notsell/:user_id/:arts_id', (req, res) => {
                 art.price = "0";
                 art.save();
             }
-
         )
 })
-
 
 
 router.get('/like/:artist_id', (req, res) => {

@@ -30,18 +30,21 @@ const artSchema = new Schema({
 
 });
 
+//조회수 증가
 artSchema.methods.increaseViewCount = function (art) {
     art.views++;
 
     return art.save();
 }
 
+//좋아요 증가
 artSchema.methods.increaseLikeCount = function (art) {
     art.saves++;
 
     return art.save();
 }
 
+//좋아요 감소
 artSchema.methods.decreaseLikeCount = function (art) {
     art.saves--;
 
@@ -49,7 +52,8 @@ artSchema.methods.decreaseLikeCount = function (art) {
 }
 
 artSchema.methods.recordPrice = function (art, price) {
-    console.log('hi', art, price);
+    
+    //flag에 적혀있는 값이 마지막 거래 가격
     switch (art.recent_price.flag) {
         case 1:
             art.recent_price.second = price;
