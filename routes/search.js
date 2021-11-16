@@ -9,7 +9,7 @@ router.get('/:keyword', (req, res) => {
 
     //작품명으로 검색
     if (req.query.option == 'title') {
-        Art.find({title: keyword})
+        Art.find({title: keyword}).populate('name', 'username')
             .then((arts) => {
                 res.send(arts);
 

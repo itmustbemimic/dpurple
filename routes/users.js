@@ -186,4 +186,12 @@ router.get('/like/:artist_id', (req, res) => {
         .catch(err => console.log(err))
 })
 
+
+router.put('/mod/:id', (req, res) => {
+    User.updateMany({}, {$set: {"user_img" : 'images/default.png'}})
+        .then((art) => {
+            res.send(art);
+        })
+})
+
 module.exports = router;

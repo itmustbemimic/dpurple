@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const userSchema = new Schema({
-    user_img: {type: String, default: '디폴트는 뭐로하지'},
+    user_img: {type: String, default: '/images/default.png'},
     email: {type: String, trim: true, unique: 1},
     username: String,
     password: String,
