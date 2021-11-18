@@ -95,7 +95,7 @@ router.post('/login', (req, res) => {
         if (user == null) {
             return res.json({
                 success: false,
-                message: "누구세요"
+                message: "등록된 이메일 없음"
             });
         }
 
@@ -111,7 +111,10 @@ router.post('/login', (req, res) => {
 
                 req.session.user_id = user._id;
                 req.session.logined = true;
-                res.send('hi ' + user.username);
+                res.json({
+                    success: true,
+                    username: user.username
+                });
             })
             .catch(err => res.json({success: false, err}));
     })
@@ -186,12 +189,5 @@ router.get('/like/:artist_id', (req, res) => {
         .catch(err => console.log(err))
 })
 
-
-router.put('/mod/:id', (req, res) => {
-    User.updateMany({}, {$set: {"user_img" : 'images/default.png'}})
-        .then((art) => {
-            res.send(art);
-        })
-})
 
 module.exports = router;
