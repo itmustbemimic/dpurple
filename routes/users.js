@@ -76,7 +76,17 @@ router.get('/:id/notonsale', (req, res) => {
 
 //회원가입
 router.post('/register', (req, res) => {
+
+
+    req.body.onSale = null;
+    req.body.notOnSale = null;
+    req.body.acc_artist = 0;
+    req.body.acc_seller = 0;
+
+    console.log(req.body)
+
     const user = new User(req.body);
+
 
     user.save((err, userInfo) => {
         if (err) {

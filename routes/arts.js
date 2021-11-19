@@ -39,34 +39,48 @@ router.post('/', (req, res) => {
     let time = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' '
         + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
 
-    const newbie = new Art({
-        img: req.body.img,
-        title: req.body.title,
-        name: req.session.user_id,
-        owner: req.session.user_id,
-        price: req.body.price,
-        views: 0,
-        saves: 0,
+    // const newbie = new Art({
+    //     img: req.body.img,
+    //     title: req.body.title,
+    //     desc: req.body.desc,
+    //     name: req.session.user_id,
+    //     owner: req.session.user_id,
+    //     price: req.body.price,
+    //     views: 0,
+    //     saves: 0,
+    //     acc: 0,
+    //
+    //     price_klay: req.body.price_klay,
+    //     price_krw: req.body.price_krw,
+    //     ratio: req.body.ratio,
+    //     nonce: req.body.nonce,
+    //     time: time,
+    //
+    //     recent_price: {
+    //         first: null,
+    //         second: null,
+    //         third: null,
+    //         fourth: null,
+    //         fifth: null,
+    //         flag: null
+    //     }
+    // });
 
-        price_klay: req.body.price_klay,
-        price_krw: req.body.price_krw,
-        ratio: req.body.ratio,
-        nonce: req.body.nonce,
-        time: time,
+    req.body.name = req.session.user_id;
+    req.body.owner = req.session.user_id;
+    req.body.views = 0;
+    req.body.saves = 0;
+    req.body.acc = 0;
+    req.body.time = time;
+    req.body.recent_price.first = null;
+    req.body.recent_price.second = null;
+    req.body.recent_price.third = null;
+    req.body.recent_price.fourth = null;
+    req.body.recent_price.fifth = null;
+    req.body.recent_price.flag = null;
 
-        recent_price: {
-            first: null,
-            second: null,
-            third: null,
-            fourth: null,
-            fifth: null,
-            flag: null
-        }
-    });
 
-    console.log(newbie);
-
-    Art.create(newbie)
+    Art.create(req.body)
         .then(art => res.send(art))
         .catch(err => res.status(500).send(err));
 })
@@ -145,22 +159,37 @@ router.get('/like/:id', (req, res) => {
 
 
 //거래시 액션 (테스트)
-router.get('/recentqueuetest/:art_id/:price/:buyer_id/:seller_id', (req, res) => {
+router.get('/recentqueuetest/:art_id/:price/:buyer_id', (req, res) => {
 
     //작품에 거래기록 추가
     Art.findById(req.params.art_id)
         .then((art) => {
-            art.recordPrice(art, req.params.price);
+            art.recordPrice(req.params.price);
             res.send(art);
+
+            //원작자에게 체결액 누적
+            User.findById(art.name)
+                .then(artist => {
+                    artist.addArtistACC(req.params.price);
+                })
+                .catch(err => console.log(err));
+
+            //원작자와 판매자가 다를때는 판매자에게도 거래액 누적
+            if (art.name != art.owner) {
+                User.findById(art.owner)
+                    .then(owner => {
+                        owner.addSellAcc(req.params.price);
+                    })
+                    .catch(err => console.log(err));
+            }
+            
+            
+            //원작자와 판매자가 같을때는 중복 누적x 원작자에게만 누적 한번
+            
+            
         })
         .catch((err) => console.log(err));
-
-    //유저별 누적 판매액수 더하기
-    User.findById(req.params.seller_id)
-        .then((user) => {
-            user.addAcc(req.params.params);
-        })
-        .catch(err => console.log(err));
+    
 
 })
 
