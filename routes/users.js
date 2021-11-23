@@ -78,8 +78,8 @@ router.get('/:id/notonsale', (req, res) => {
 router.post('/register', (req, res) => {
 
 
-    req.body.onSale = null;
-    req.body.notOnSale = null;
+    req.body.onSale = [];
+    req.body.notOnSale = [];
     req.body.acc_artist = 0;
     req.body.acc_seller = 0;
 

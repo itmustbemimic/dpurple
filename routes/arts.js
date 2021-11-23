@@ -81,8 +81,22 @@ router.post('/', (req, res) => {
 
 
     Art.create(req.body)
-        .then(art => res.send(art))
+        .then(art => {
+            res.send(art)
+
+            User.findById(req.session.user_id)
+                .then(user => {
+
+                    //가격이 null이면 판매중 아님
+                    if (art.price == null)
+                        user.addNotOnSale(art._id);
+                    else
+                        user.addOnSale(art._id)
+                })
+        })
         .catch(err => res.status(500).send(err));
+
+
 })
 
 //작품 삭제
@@ -182,14 +196,14 @@ router.get('/recentqueuetest/:art_id/:price/:buyer_id', (req, res) => {
                     })
                     .catch(err => console.log(err));
             }
-            
-            
+
+
             //원작자와 판매자가 같을때는 중복 누적x 원작자에게만 누적 한번
-            
-            
+
+
         })
         .catch((err) => console.log(err));
-    
+
 
 })
 

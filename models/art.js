@@ -85,6 +85,7 @@ artSchema.methods.recordPrice = function (price) {
             break;
     }
 
+    //누적 금액 추가
     this.acc += Number(price);
 
 

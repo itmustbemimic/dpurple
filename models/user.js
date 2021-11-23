@@ -97,6 +97,22 @@ userSchema.methods.deleteFavoriteUsers = function (user_id) {
         .catch(err => console.log(err))
 }
 
+userSchema.methods.addOnSale = function (art_id) {
+    this.onSale.addToSet(art_id);
+
+    return this.save()
+        .then(user => user)
+        .catch(err => err);
+}
+
+userSchema.methods.addNotOnSale = function (art_id) {
+    this.notOnSale.addToSet(art_id);
+
+    return this.save()
+        .then(user => user)
+        .catch(err => err);
+}
+
 userSchema.methods.switchToSale = function (arts_id) {
     this.onSale.addToSet(arts_id);
     this.notOnSale.pull(arts_id);
