@@ -6,10 +6,12 @@ const auth = require("../middleware/auth");
 
 
 //로그아웃
-router.get('/logout', (req, res) => {
+router.post('/logout', (req, res) => {
 
     req.session.destroy();
-    res.send('logout!')
+    res.json({
+        success : true
+    })
 
 
 });
