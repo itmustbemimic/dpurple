@@ -125,6 +125,7 @@ router.post('/login', (req, res) => {
                 req.session.logined = true;
                 res.json({
                     success: true,
+                    user_id: user._id,
                     username: user.username
                 });
             })
