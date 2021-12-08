@@ -6,7 +6,7 @@ const User = require('../models/user');
 
 //전체 작품 조회
 router.get('/', (req, res) => {
-    Art.find().populate('name', 'username')
+    Art.find().populate('name', 'username').sort({time: -1})
         .then((arts) => {
             res.send(arts);
         })
