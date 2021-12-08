@@ -23,8 +23,9 @@ router.post('/', upload.single('thumbnailImage'), (req, res) => {
             else console.log(req.file.filename + 'thumbnail generated!');
         });
 
+    let filename = JSON.parse(`{ "filename" : "${req.file.filename}" }`)
 
-    res.send(req.file.filename);
+    res.send(filename);
 });
 
 
