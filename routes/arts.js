@@ -39,32 +39,6 @@ router.post('/', (req, res) => {
     let time = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' '
         + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
 
-    // const newbie = new Art({
-    //     img: req.body.img,
-    //     title: req.body.title,
-    //     desc: req.body.desc,
-    //     name: req.session.user_id,
-    //     owner: req.session.user_id,
-    //     price: req.body.price,
-    //     views: 0,
-    //     saves: 0,
-    //     acc: 0,
-    //
-    //     price_klay: req.body.price_klay,
-    //     price_krw: req.body.price_krw,
-    //     ratio: req.body.ratio,
-    //     nonce: req.body.nonce,
-    //     time: time,
-    //
-    //     recent_price: {
-    //         first: null,
-    //         second: null,
-    //         third: null,
-    //         fourth: null,
-    //         fifth: null,
-    //         flag: null
-    //     }
-    // });
 
     req.body.name = req.session.user_id;
     req.body.owner = req.session.user_id;

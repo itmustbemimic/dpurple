@@ -13,7 +13,7 @@ const upload = multer({
 
 
 //이미지 업로드
-router.post('/', upload.single('aaa'), (req, res) => {
+router.post('/', upload.single('thumbnailImage'), (req, res) => {
     console.log('몬가... 몬가 일어나고 잇슴...');
 
     sharp(req.file.path)
