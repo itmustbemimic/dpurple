@@ -151,15 +151,15 @@ router.get('/auth', auth, (req, res) => {
 
 
 //판매중이 아닌 작품을 판매중으로 변경
-router.post('/sell/:user_id/:arts_id', (req, res) => {
-    //user_id 나중에 req.session.user_id로 바꾸기
-    User.findById(req.params.user_id)
+router.post('/sell/:arts_id', (req, res) => {
+    User.findById(req.session.user_id)
         .then((user) => {
+            // TODO: 본인소유만 가능하게 변경필요!
             user.switchToSale(req.params.arts_id);
             res.send(user.onSale);
         })
 
-    Art.findById(req.params.arts_id)
+    Art.findOne({_id: req.params.arts_id, name: req.session.user_id})
         .then((art) => {
                 art.price = req.body.price;
                 art.save();
@@ -168,15 +168,15 @@ router.post('/sell/:user_id/:arts_id', (req, res) => {
 })
 
 //판매중 작품을 판매중이 아님으로 변경
-router.post('/notsell/:user_id/:arts_id', (req, res) => {
-    //user_id 나중에 req.session.user_id로 바꾸기
-    User.findById(req.params.user_id)
+router.post('/notsell/:arts_id', (req, res) => {
+    User.findById(req.session.user_id)
         .then((user) => {
+            // TODO: 본인소유만 가능하게 변경필요!
             user.switchToNotSale(req.params.arts_id);
             res.send(user.notOnSale);
         })
 
-    Art.findById(req.params.arts_id)
+    Art.findOne({_id: req.params.arts_id, name: req.session.user_id})
         .then((art) => {
                 art.price = "0";
                 art.save();
