@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/user");
 const Art = require('../models/art');
 const auth = require("../middleware/auth");
+const {isLoggedIn, isNotLoggedIn} = require("./middlewares");
 
 
 //로그아웃
@@ -43,15 +44,21 @@ router.get('/users', (req, res) => {
 
 
 //개별 유저 프로필
-router.get('/:id', (req, res) => {
-    User.findById(req.params.id)
-        .then((user) => {
-            res.send(user);
-        })
-        .catch((err) => {
-            console.error(err);
-        });
+// router.get('/:id', (req, res) => {
+//     User.findById(req.params.id)
+//         .then((user) => {
+//             res.send(user);
+//         })
+//         .catch((err) => {
+//             console.error(err);
+//         });
+// });
+
+//passport 내 프로필
+router.get('/profile', isLoggedIn, (req, res) => {
+    res.send(req.username);
 });
+
 
 //해당유저의 판매중 작품
 router.get('/:id/onsale', (req, res) => {
@@ -97,6 +104,11 @@ router.post('/register', (req, res) => {
         }
         return res.status(200).json({success: true});
     });
+})
+
+//passport 회원가입
+router.get('/join', isNotLoggedIn, (req, res) => {
+
 })
 
 

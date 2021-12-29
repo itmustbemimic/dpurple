@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const cors = require('cors');
+const passport = require('passport')
 
 require('dotenv').config();
 const {MONGO_URI, SEC} = process.env;
@@ -19,9 +20,12 @@ const imgRouter = require('./routes/images');
 const rankRouter = require('./routes/rank');
 const searchRouter = require('./routes/search');
 const recommendRouter = require('./routes/recommends');
+const authRouter = require('./routes/auth');
 
 
 const app = express();
+const passportConfig = require("./passport");
+passportConfig();
 
 
 // view engine setup
@@ -54,6 +58,9 @@ app.use(
     })
 );
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/arts', artsRouter);
@@ -61,6 +68,7 @@ app.use('/images', imgRouter);
 app.use('/rank', rankRouter);
 app.use('/search', searchRouter);
 app.use('/recommends', recommendRouter);
+app.use('/auth', authRouter);
 
 
 // catch 404 and forward to error handler
