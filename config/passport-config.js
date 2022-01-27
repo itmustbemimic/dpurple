@@ -1,5 +1,6 @@
 const passport = require('passport');
 const {Strategy: LocalStrategy} = require('passport-local');
+const {Strategy: KaKaoStrategy} = require('passport-kakao');
 const bcrypt = require('bcrypt');
 
 require('dotenv').config();
