@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Art = require('../models/art');
 const User = require('../models/user');
+const request = require('request');
 
 
 //전체 작품 조회
@@ -181,5 +182,24 @@ router.get('/recentqueuetest/:art_id/:price/:buyer_id', (req, res) => {
 
 })
 
+
+//minting
+router.get('/minting/:art_id', (req, res) => {
+    const options = {
+        headers: {
+            'x-chain-id': 1001,
+            'Authorization': 'Basic S0FTS1lPNEpZVUpNQjdUV1VFMVAwSjg5OjBSR3hBX3VINjhmWlJDMXJuamtFYkxwZFFOdlRoQXNBU0k3RjhJZUY='
+        },
+        form: {
+            file: './public/images/origin/sdf.png'
+        }
+    }
+
+    request.post(options, (err, res, body) => {
+        console.error(err)
+        console.log("res:::", res)
+        console.log("body:::", body)
+    })
+})
 
 module.exports = router;
