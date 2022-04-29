@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Art = require('../models/art');
 const User = require('../models/user');
+require('dotenv').config();
 const request = require('request');
+
 
 
 //전체 작품 조회
@@ -188,7 +190,7 @@ router.get('/minting/:art_id', (req, res) => {
     const options = {
         headers: {
             'x-chain-id': 1001,
-            'Authorization': 'Basic S0FTS1lPNEpZVUpNQjdUV1VFMVAwSjg5OjBSR3hBX3VINjhmWlJDMXJuamtFYkxwZFFOdlRoQXNBU0k3RjhJZUY='
+            'Authorization': process.env.KAS_AUTH
         },
         form: {
             file: './public/images/origin/sdf.png'
