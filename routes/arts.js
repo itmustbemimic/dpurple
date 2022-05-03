@@ -4,7 +4,8 @@ const Art = require('../models/art');
 const User = require('../models/user');
 require('dotenv').config();
 const request = require('request');
-
+const fs = require('fs');
+const path = require('path');
 
 
 //전체 작품 조회
@@ -19,7 +20,6 @@ router.get('/', (req, res) => {
 
 
 });
-
 //개별 작품 조회
 router.get('/:id', (req, res) => {
     Art.findById(req.params.id)
@@ -193,15 +193,31 @@ router.get('/minting/:art_id', (req, res) => {
             'Authorization': process.env.KAS_AUTH
         },
         form: {
-            file: './public/images/origin/sdf.png'
-        }
+            file: fs.createReadStream(path.resolve(__dirname, '../public/images/origin/sdf.png'))
+        },
+        uri: "https://metadata-api.klaytnapi.com/v1/metadata/asset"
     }
 
-    request.post(options, (err, res, body) => {
-        console.error(err)
-        console.log("res:::", res)
-        console.log("body:::", body)
-    })
+    request.post(options, (_err, _res, _body) => {
+
+        if (_err) {
+            console.error(_err);
+            res.send(_err);
+        }
+        else {
+            console.log("res:::", _res);
+            console.log("body:::", _body);
+            res.send(_res);
+        }
+
+
+    });
+
+
+
+
 })
+
+
 
 module.exports = router;
