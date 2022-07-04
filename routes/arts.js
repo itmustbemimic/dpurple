@@ -3,9 +3,7 @@ const router = express.Router();
 const Art = require('../models/art');
 const User = require('../models/user');
 require('dotenv').config();
-const request = require('request');
-const fs = require('fs');
-const path = require('path');
+
 
 
 //전체 작품 조회
@@ -185,38 +183,7 @@ router.get('/recentqueuetest/:art_id/:price/:buyer_id', (req, res) => {
 })
 
 
-//minting
-router.get('/minting/:art_id', (req, res) => {
-    const options = {
-        headers: {
-            'x-chain-id': 1001,
-            'Authorization': process.env.KAS_AUTH
-        },
-        form: {
-            file: fs.createReadStream(path.resolve(__dirname, '../public/images/origin/sdf.png'))
-        },
-        uri: "https://metadata-api.klaytnapi.com/v1/metadata/asset"
-    }
 
-    request.post(options, (_err, _res, _body) => {
-
-        if (_err) {
-            console.error(_err);
-            res.send(_err);
-        }
-        else {
-            console.log("res:::", _res);
-            console.log("body:::", _body);
-            res.send(_res);
-        }
-
-
-    });
-
-
-
-
-})
 
 
 

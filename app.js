@@ -21,6 +21,7 @@ const rankRouter = require('./routes/rank');
 const searchRouter = require('./routes/search');
 const recommendRouter = require('./routes/recommends');
 const authRouter = require('./routes/auth');
+const mintingRouter = require('./routes/minting');
 
 
 const app = express();
@@ -69,6 +70,7 @@ app.use('/rank', rankRouter);
 app.use('/search', searchRouter);
 app.use('/recommends', recommendRouter);
 app.use('/auth', authRouter);
+app.use('/minting', mintingRouter);
 
 
 // catch 404 and forward to error handler
