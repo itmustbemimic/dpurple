@@ -5,7 +5,6 @@
 - RESTful API 
 - MongoDB
 - Web3.js
-- Solidity
 
 
 
