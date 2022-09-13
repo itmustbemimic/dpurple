@@ -1,6 +1,4 @@
-# dpurple
-
-## NFT 커뮤니티 서비스
+# dpurple - NFT 커뮤니티 서비스
 
 기술 스택 
 - Node.js with Express
@@ -8,6 +6,8 @@
 - MongoDB
 - Web3.js
 - Solidity
+
+
 
 
 기능
