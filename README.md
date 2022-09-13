@@ -2,7 +2,7 @@
 
 ## NFT 커뮤니티 서비스
 
-# 기술 스택 
+기술 스택 
 - Node.js with Express
 - RESTful API 
 - MongoDB
@@ -10,7 +10,7 @@
 - Solidity
 
 
-# 기능
+기능
 - 작품 조회
 - 작품 검색
 - 랭킹 조회
