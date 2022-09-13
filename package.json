@@ -30,6 +30,7 @@
     "passport-local-mongoose": "^6.1.0",
     "pug": "^3.0.2",
     "request": "^2.88.2",
-    "sharp": "^0.30.7"
+    "sharp": "^0.30.7",
+    "web3": "^1.7.5"
   }
 }

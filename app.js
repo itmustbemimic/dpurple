@@ -89,11 +89,11 @@ app.use(function (err, req, res, next) {
     res.render('error');
 });
 
-mongoose.connect(MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
-    .then(() => {console.log('connected to db');})
-    .catch(e => console.error(e));
-
-
+// mongoose.connect(MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
+//     .then(() => {console.log('connected to db');})
+//     .catch(e => console.error(e));
+//
+//
 
 
 
